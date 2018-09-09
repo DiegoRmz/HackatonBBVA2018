@@ -5,7 +5,9 @@ var Transaction = mongoose.model('Transaction');
 var ObjectId = require('mongoose').Types.ObjectId; 
 var PDFPrinter = require('pdfmake/src/printer');
 
-var Mailer = require('../util/Mailer');
+var Mailer  = require('../util/Mailer');
+var SMS     = require('../util/sms');
+var qrcode     = require('qrcode');
 
 exports.storeTransaction = function(req,res){
     var transaction = new Transaction(req.body);
@@ -37,6 +39,30 @@ exports.storeTransaction = function(req,res){
                     res.status(500).send('Disculpe, por el momento no podemos atenderle: '+err);
                 }
             )
+        }
+        else if(transaction.tipo_compr == 'Mensaje'){
+            var txtMsg = 'Puede consultar su comprobante en la siguiente liga: '+
+                "localhost:3000/api/Transaction/getComprobante/"+transaction._id+" . Gracias";
+
+            var toNumber = transaction.telef_usuario;
+            SMS.sendSMS(txtMsg,toNumber).then(
+                success=>{
+                    res.status(200).send('Revise su móvil para encontrar su comprobante');
+                },err=>{
+                    console.log(err);
+                    res.status(500).send('Disculpe, por el momento no podemos atenderle: '+err);
+                }
+            )
+        }
+        else if(transaction.tipo_compr == 'QR'){
+            qrcode.toString("localhost:3000/api/Transaction/getComprobante/"+transaction._id,(err,string)=>{
+                if(err){
+                    res.status(500).send('Disculpe, por el momento no podemos atenderle: '+err);
+                }else{
+//                    res.setHeader('Content-type', 'image/png');
+                    res.status(200).send(string);
+                }
+            });
         }
     });
 }
