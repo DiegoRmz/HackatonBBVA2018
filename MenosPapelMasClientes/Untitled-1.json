@@ -1,0 +1,9 @@
+{
+	"transactionType":"Deposito",
+	"transactionDate":"2018-09-01",
+	"folio":33456,
+	"email":"",
+	"phone":"722-608-8413",
+	"amount":5560.03,
+	"atmType":"Corporativo"
+}

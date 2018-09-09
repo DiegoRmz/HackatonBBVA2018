@@ -1,13 +1,42 @@
-const http = require('http');
+var express = require('express'), 
+app = express(), 
+http = require('http'),
+server = http.createServer(app),
+ mongoose = require('mongoose'),
+ methodOverride = require("method-override"),
+ bodyParser = require('body-parser');
 
-const hostname  = '127.0.0.1';
-const port      = 3080;
 
-const server = http.createServer((request, response){
-    
+mongoose.connect('mongodb://localhost:27017/Paperless',function(err,result){
+    if(err){
+        console.log(err);
+        throw err;
+    }
+    console.log("Connected successfully to the database");
 });
 
 
-server.listen(port, hostname, () => {
-    console.log(`Server running at http://${hostname}:${port}/`);
-});
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(methodOverride());
+
+var transactionModel        = require('./Model/Transaction')(app,mongoose);
+var transactionController   = require('./Controller/TransactionsController');
+
+var router = express.Router();
+var transactionRouter = express.Router();
+
+transactionRouter.route('/Transaction/Save').post(transactionController.storeTransaction);
+transactionRouter.route('/Transaction/GetById/:id').get(transactionController.findById);
+
+router.get('/',function(request,result){
+    result.send("Hello World");
+})
+
+app.use(router);
+app.use('/api',transactionRouter);
+
+
+app.listen(3000,function(){
+    console.log("Server running");
+})
