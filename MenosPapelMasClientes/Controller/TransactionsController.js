@@ -4,7 +4,8 @@ var mongoose = require('mongoose');
 var Transaction = mongoose.model('Transaction');
 var ObjectId = require('mongoose').Types.ObjectId; 
 var PDFPrinter = require('pdfmake/src/printer');
-let date = require('date-and-time');
+
+var Mailer = require('../util/Mailer');
 
 exports.storeTransaction = function(req,res){
     var transaction = new Transaction(req.body);
@@ -14,7 +15,29 @@ exports.storeTransaction = function(req,res){
             console.log(err);
             res.status(500).send(err.message);
         }
-        res.status(200).json(transaction);
+        
+       if(transaction.tipo_compr == 'Email'){
+            var messageHtml = "<h1>Comprobante de "+transaction.tipo_de_operacion+"</h1><br>"+
+            "<p><b>Estimado Usuario: </b><br>Le informamos la realización de un"+
+            transaction.tipo_de_operacion+" a su nombre, para acceder a su comprobante visite la siguiente liga: "+
+            "<a href='localhost:3000/api/Transaction/getComprobante/"+transaction._id+"'>Comprobante digital</a>"+
+            "<br>Atentamente: BBVA Bancomer</p>";
+
+            var messageText = "Comprobante de "+transaction.tipo_de_operacion+"\nEstimado Usuario:\n"+
+            "Le informamos la realización de un "
+            +transaction.tipo_de_operacion+" a su nombre, para acceder a su comprobante visite la siguiente liga:"+
+            "localhost:3000/api/Transaction/getComprobante/"+transaction._id+" "+
+            ".\nAtentamente: BBVA Bancomer";
+
+            Mailer.sendmail(transaction.mail_usuario,"Comprobante de "+transaction.tipo_de_operacion,messageText,messageHtml).then(
+                success=>{
+                    res.status(200).send('Revise su correo electrónico para encontrar su comprobante');
+                },err=>{
+                    console.log(err);
+                    res.status(500).send('Disculpe, por el momento no podemos atenderle: '+err);
+                }
+            )
+        }
     });
 }
 
@@ -29,6 +52,7 @@ exports.findById = function(req,res){
 }
 
 //API/Transaction/getComprobante/iddetransaccion
+//Will work if QR is implemented
 exports.createTransactionPdf = function(req,res){
     var fnamePrefix = req.params.id;
 
