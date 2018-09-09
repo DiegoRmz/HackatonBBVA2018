@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <title></title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    </head>
+    <body>
+        <div id="comprobante" class="container">
+            <img src="img/bbvalogo.jpeg">
+            <br><br><br>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="text-center">
+                        <img src="img/email.jpeg" class="img-l" onclick="toggle('mailgrp');">
+                        <br><br>
+                        <div class="input-group mb-3 hide" id="mailgrp">
+                            <input type="text" class="form-control" id="email">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" id="mailsend" onclick="sMail();">Enviar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="text-center">
+                        <img src="img/sms.jpeg" class="img-l" onclick="toggle('smsgrp')">
+                        <br><br>
+                        <div class="input-group mb-3 hide" id="smsgrp">
+                            <input type="text" class="form-control" id="telefono">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" id="smsend" onclick="sSms();">Enviar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br><br>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="text-center">
+                        <img src="img/qrcode.jpeg" class="img-l" onclick="sQr();">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="text-center">
+                        <img src="img/print.jpeg" class="img-l" onclick="print()">
+                    </div>
+                </div>
+            </div>
+            <br><br>
+            <div class="row">
+                <div class="col-md-6">
+                    <button class="btn-menu">Menú principal</button>
+                </div>
+                <div class="col-md-6">
+                    <button class="btn-salir">Salir</button>
+                </div>
+            </div>
+            <br><br>
+        </div>
+        <div id="resultado" class="container d-none">
+            <img src="img/bbvalogo.jpeg">
+            <br><br><br>
+            <h1 class="text-center">Gracias por su visita!</h1>
+            <br><br><br>
+            <div id="target"></div>
+        </div>
+
+        <script src="js/vendor/jquery-3.3.1.min.js"></script>
+        <script src="js/vendor/jquery.auto-complete.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" crossorigin="anonymous"></script>
+
+        <script> 
+            function toggle(id){
+                $("#"+id).removeClass('hide').addClass('show');
+            }
+
+            function sMail(){
+                var mail = $("#email").val();
+                var mockTransaction = {"telef_usuario":"","mail_usuario":mail,"fech_operac":"2018-09-08","sucursal":685,"id_de_dispositivo":343,"estado_sucur":"Campeche","munic_sucur":"Municipio","col_sucur": "Leon","pais": "MEXICO","tipo_de_cliente":"Cliente Bancomer", "Nom_clien":"Diego","Apel_pate_clien":"Ramirez","Apel_mat_clien": "Bustamante","num_clien": 3517,"cuenta_clien": 211515816,"telef_clien": "7226088413","Compa_telef": "TELCEL","telef_trans": "7226088413","sexo": "M","monto_operacion": 3500.80,"tipo_de_operacion": "Retiro","convenio": 0,"referencia": "","respuest": "Acepta","tipo_compr": "Email","tiemp_caja": 1}
+                
+                $.ajax({
+                    url:'http://localhost:3000/api/Transaction/Save',
+                    crossDomain: true,
+                    type:'POST',
+                    contentType:'application/json',
+                    data: JSON.stringify(mockTransaction)
+                }).done(function(succ){
+                    console.log(succ);
+                    alert("Gracias por su visita!");
+                })
+                .fail(function(error){
+                    console.log(error);
+                    alert("Disculpe las molestias, no se pudo realizar su petición");
+                })
+            }
+
+            function sSms(){
+                var tel = $("#telefono").val();
+                var mockTransaction = {"telef_usuario":"+52"+tel,"mail_usuario":"","fech_operac":"2018-09-08","sucursal":685,"id_de_dispositivo":343,"estado_sucur":"Campeche","munic_sucur":"Municipio","col_sucur": "Leon","pais": "MEXICO","tipo_de_cliente":"Cliente Bancomer", "Nom_clien":"Diego","Apel_pate_clien":"Ramirez","Apel_mat_clien": "Bustamante","num_clien": 3517,"cuenta_clien": 211515816,"telef_clien": "7226088413","Compa_telef": "TELCEL","telef_trans": "7226088413","sexo": "M","monto_operacion": 3500.80,"tipo_de_operacion": "Retiro","convenio": 0,"referencia": "","respuest": "Acepta","tipo_compr": "Mensaje","tiemp_caja": 1}
+                
+                $.ajax({
+                    url:'http://localhost:3000/api/Transaction/Save',
+                    crossDomain: true,
+                    type:'POST',
+                    contentType:'application/json',
+                    data: JSON.stringify(mockTransaction)
+                }).done(function(succ){
+                    console.log(succ);
+                    alert("Gracias por su visita!");
+                })
+                .fail(function(error){
+                    console.log(error);
+                    alert("Disculpe las molestias, no se pudo realizar su petición");
+                })
+            }
+
+            function sQr(){
+                var mockTransaction = {"telef_usuario":"","mail_usuario":"","fech_operac":"2018-09-08","sucursal":685,"id_de_dispositivo":343,"estado_sucur":"Campeche","munic_sucur":"Municipio","col_sucur": "Leon","pais": "MEXICO","tipo_de_cliente":"Cliente Bancomer", "Nom_clien":"Diego","Apel_pate_clien":"Ramirez","Apel_mat_clien": "Bustamante","num_clien": 3517,"cuenta_clien": 211515816,"telef_clien": "7226088413","Compa_telef": "TELCEL","telef_trans": "7226088413","sexo": "M","monto_operacion": 3500.80,"tipo_de_operacion": "Retiro","convenio": 0,"referencia": "","respuest": "Acepta","tipo_compr": "QR","tiemp_caja": 1}
+
+                $.ajax({
+                    url:'http://localhost:3000/api/Transaction/Save',
+                    crossDomain: true,
+                    type:'POST',
+                    contentType:'application/json',
+                    data: JSON.stringify(mockTransaction)
+                }).done(function(succ){
+                    $("#comprobante").addClass('d-none');
+                    $("#resultado").removeClass('d-none');
+
+                    $("#target").append('<img src="'+succ+'">');
+                })
+                .fail(function(error){
+                    console.log(error);
+                    alert("Disculpe las molestias, no se pudo realizar su petición");
+                })
+            }
+
+            function print(){
+                $("#comprobante").addClass('d-none');
+                $("#resultado").removeClass('d-none');
+
+                $("#target").append('<img src="https://c7.alamy.com/compes/bmf2p2/amsterdam-atm-automatic-teller-machine-de-dinero-cajeros-cajeros-en-un-sucio-inmundo-rincon-inseguro-con-feo-graffiti-etiquetas-bmf2p2.jpg">');
+            }
+        </script>
+    </body>
+</html>

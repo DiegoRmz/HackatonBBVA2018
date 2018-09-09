@@ -1,0 +1,34 @@
+.img-l{
+    height: 150px;
+    width: auto;
+}
+
+.btn-salir{
+    width: 50%;
+    border-radius: 5px;
+    font-size: 25px;
+    padding: 2%;
+    background-color: #C0475E;
+    margin-left: 25%;
+    margin-right: auto;
+    color: white;
+}
+
+.btn-menu{
+    width: 50%;
+    border-radius: 5px;
+    font-size: 25px;
+    padding: 2%;
+    background-color: #004481;
+    margin-left: 25%;
+    margin-right: auto;
+    color: white;
+}
+
+.hide{
+    visibility: hidden;
+}
+
+.show{
+    visibility: visible;
+}

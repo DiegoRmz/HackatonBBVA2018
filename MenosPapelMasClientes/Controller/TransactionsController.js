@@ -22,13 +22,13 @@ exports.storeTransaction = function(req,res){
             var messageHtml = "<h1>Comprobante de "+transaction.tipo_de_operacion+"</h1><br>"+
             "<p><b>Estimado Usuario: </b><br>Le informamos la realización de un"+
             transaction.tipo_de_operacion+" a su nombre, para acceder a su comprobante visite la siguiente liga: "+
-            "<a href='localhost:3000/api/Transaction/getComprobante/"+transaction._id+"'>Comprobante digital</a>"+
+            "<a href='http://10.7.31.184:3000/api/Transaction/getComprobante/"+transaction._id+"'>Comprobante digital</a>"+
             "<br>Atentamente: BBVA Bancomer</p>";
 
             var messageText = "Comprobante de "+transaction.tipo_de_operacion+"\nEstimado Usuario:\n"+
             "Le informamos la realización de un "
             +transaction.tipo_de_operacion+" a su nombre, para acceder a su comprobante visite la siguiente liga:"+
-            "localhost:3000/api/Transaction/getComprobante/"+transaction._id+" "+
+            "http://10.7.31.184:3000/api/Transaction/getComprobante/"+transaction._id+" "+
             ".\nAtentamente: BBVA Bancomer";
 
             Mailer.sendmail(transaction.mail_usuario,"Comprobante de "+transaction.tipo_de_operacion,messageText,messageHtml).then(
@@ -42,7 +42,7 @@ exports.storeTransaction = function(req,res){
         }
         else if(transaction.tipo_compr == 'Mensaje'){
             var txtMsg = 'Puede consultar su comprobante en la siguiente liga: '+
-                "localhost:3000/api/Transaction/getComprobante/"+transaction._id+" . Gracias";
+                "http://10.7.31.184:3000/api/Transaction/getComprobante/"+transaction._id+" . Gracias";
 
             var toNumber = transaction.telef_usuario;
             SMS.sendSMS(txtMsg,toNumber).then(
@@ -55,7 +55,7 @@ exports.storeTransaction = function(req,res){
             )
         }
         else if(transaction.tipo_compr == 'QR'){
-            qrcode.toString("localhost:3000/api/Transaction/getComprobante/"+transaction._id,(err,string)=>{
+            qrcode.toDataURL("http://10.7.31.184:3000/api/Transaction/getComprobante/"+transaction._id,(err,string)=>{
                 if(err){
                     res.status(500).send('Disculpe, por el momento no podemos atenderle: '+err);
                 }else{
