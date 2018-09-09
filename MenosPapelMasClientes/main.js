@@ -28,6 +28,7 @@ var transactionRouter = express.Router();
 
 transactionRouter.route('/Transaction/Save').post(transactionController.storeTransaction);
 transactionRouter.route('/Transaction/GetById/:id').get(transactionController.findById);
+transactionRouter.route('/Transaction/getComprobante/:id').get(transactionController.createTransactionPdf);
 
 router.get('/',function(request,result){
     result.send("Hello World");

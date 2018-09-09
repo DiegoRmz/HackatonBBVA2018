@@ -7,10 +7,12 @@
     },
     "dependencies": {
         "body-parser": "^1.18.3",
+        "date-and-time": "^0.6.2",
         "express": "^4.16.3",
         "method-override": "^3.0.0",
         "mongoose": "^4.8.5",
-        "pdfkit": "^0.8.3"
+        "nodemailer": "^4.6.8",
+        "pdfmake": "^0.1.38"
     },
     "devDependencies": {
         "nodemon": "^1.18.4"

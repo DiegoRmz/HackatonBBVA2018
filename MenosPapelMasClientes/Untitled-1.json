@@ -1,9 +1,1 @@
-{
-	"transactionType":"Deposito",
-	"transactionDate":"2018-09-01",
-	"folio":33456,
-	"email":"",
-	"phone":"722-608-8413",
-	"amount":5560.03,
-	"atmType":"Corporativo"
-}
+{"telef_usuario":"7226088413","mail_usuario":"","fech_operac":"2018-09-08","sucursal":685,"id_de_dispositivo":343,"estado_sucur":"Campeche","munic_sucur":"Municipio","col_sucur": "Leon","pais": "MEXICO","tipo_de_cliente":"Cliente Bancomer", "Nom_clien":"Diego","Apel_pate_clien":"Ramirez","Apel_mat_clien": "Bustamante","num_clien": 3517,"cuenta_clien": 211515816,"telef_clien": "7226088413","Compa_telef": "TELCEL","telef_trans": "7226088413","sexo": "M","monto_operacion": 3500.80,"tipo_de_operacion": "Retiro","convenio": 0,"referencia": "","respuest": "Acepta","tipo_compr": "Mensaje","tiemp_caja": 1}
